@@ -1,0 +1,63 @@
+/* Prediction Cards */
+.prediction-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  border-radius: var(--card-radius);
+  padding: 1rem;
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: transform var(--transition-speed);
+}
+
+.prediction-card:hover {
+  transform: scale(1.02);
+}
+
+/* Progress Bar */
+.confidence-bar {
+  background-color: #e0e0e0;
+  border-radius: 8px;
+  height: 20px;
+  width: 100%;
+  margin-top: 0.5rem;
+  overflow: hidden;
+}
+
+.confidence-fill {
+  height: 100%;
+  border-radius: 8px;
+  text-align: right;
+  padding-right: 8px;
+  color: white;
+  font-weight: bold;
+  font-size: 0.8rem;
+  transition: width var(--transition-speed);
+}
+
+/* Chart Containers */
+.chart-box {
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  padding: 10px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  transition: box-shadow var(--transition-speed);
+}
+
+.chart-box:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Dark Mode Overrides */
+body.dark-mode .prediction-card {
+  background: rgba(44, 44, 44, 0.6);
+  color: #F9FAFB;
+}
+
+body.dark-mode .chart-box {
+  background: #2C2C2C;
+  border-color: #444;
+}

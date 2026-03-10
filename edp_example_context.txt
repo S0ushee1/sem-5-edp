@@ -1,0 +1,31 @@
+edp example 
+
+1) real 
+
+title ----
+
+NASA Announces Discovery of Water on Mars
+
+body----\
+
+NASA scientists confirmed that new satellite imagery has revealed evidence of liquid water beneath the surface of Mars. The discovery strengthens the possibility of microbial life and opens new opportunities for future human exploration missions.
+
+2)Satire
+
+title ---
+
+Local Man Claims His Cat Can Predict Stock Market Trends
+
+body ---
+
+A satirical news outlet reported that a man has been relying on his cat’s meows to make investment decisions. According to the article, the feline has outperformed Wall Street analysts for three months straight, though experts caution readers not to take the story seriously.
+
+3)fake
+
+title ---
+
+Scientists Confirm Secret Pyramid Discovered Beneath the Atlantic Ocean
+
+body ---
+
+Several online reports claim that a team of researchers has uncovered a massive pyramid structure hidden beneath the Atlantic Ocean. According to the articles, the discovery proves the existence of an advanced ancient civilization that predates recorded history. However, no credible scientific evidence or peer-reviewed studies have been provided to support these claims.

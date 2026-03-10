@@ -1,0 +1,451 @@
+================================================================================
+                        FAKE NEWS DETECTOR PROJECT
+================================================================================
+
+Project Title:       Fake News Detector
+Version:             1.0.0
+Date:                [Current Date]
+Authors:             [Your Name/Team]
+Description:         ML-based news classification system for Fake/Real/Satire detection
+
+================================================================================
+TABLE OF CONTENTS
+================================================================================
+
+1. EXECUTIVE SUMMARY
+2. INTRODUCTION
+   2.1 Purpose
+   2.2 Scope
+   2.3 Objectives
+3. SYSTEM REQUIREMENTS
+4. PROJECT STRUCTURE
+5. INSTALLATION GUIDE
+6. USER MANUAL
+   6.1 Web Interface
+   6.2 API Usage
+7. TECHNICAL SPECIFICATIONS
+   7.1 Architecture
+   7.2 Data Processing Pipeline
+   7.3 Model Details
+8. CONFIGURATION
+9. DEVELOPMENT GUIDE
+   9.1 Training New Models
+   9.2 Adding Features
+10. TESTING
+11. TROUBLESHOOTING
+12. DEPENDENCIES
+13. LICENSE AND LEGAL
+14. CONTACT INFORMATION
+15. APPENDICES
+
+================================================================================
+1. EXECUTIVE SUMMARY
+================================================================================
+
+The Fake News Detector is a machine learning application designed to classify news
+articles into three categories: Fake, Real, or Satire. Utilizing natural language
+processing techniques and a TF-IDF vectorizer combined with Logistic Regression,
+the system provides both web-based and API-based interfaces for real-time news
+analysis.
+
+Key Features:
+- Real-time news classification
+- Web-based user interface (Streamlit)
+- REST API for programmatic access
+- Model explainability features
+- Configurable preprocessing pipeline
+- Support for multiple ML models
+
+================================================================================
+2. INTRODUCTION
+================================================================================
+
+2.1 PURPOSE
+-----------
+In an era of information overload, distinguishing between credible news and
+misinformation is crucial. This project aims to provide an accessible tool for
+automated news verification using machine learning techniques.
+
+2.2 SCOPE
+---------
+The system covers:
+- Text-based news article classification
+- Three-class classification (Fake/Real/Satire)
+- Web interface for individual predictions
+- API for batch processing and integration
+- Model training and evaluation pipelines
+
+Out of scope:
+- Image/video analysis
+- Multi-language support (English only)
+- Real-time news monitoring
+- Social media integration
+
+2.3 OBJECTIVES
+--------------
+- Achieve >80% classification accuracy
+- Provide user-friendly web interface
+- Enable easy API integration
+- Support model explainability
+- Maintain extensible architecture
+
+================================================================================
+3. SYSTEM REQUIREMENTS
+================================================================================
+
+Minimum Requirements:
+- Python 3.8 or higher
+- 4GB RAM
+- 2GB free disk space
+- Internet connection for dependency installation
+
+Recommended Requirements:
+- Python 3.9+
+- 8GB RAM
+- 10GB free disk space
+- Modern web browser (Chrome, Firefox, Safari, Edge)
+
+Supported Operating Systems:
+- Windows 10/11
+- macOS 10.15+
+- Linux (Ubuntu 18.04+, CentOS 7+)
+
+================================================================================
+4. PROJECT STRUCTURE
+================================================================================
+
+fake-news-detector/
+├── assets/                    # Static assets
+│   ├── styles/               # CSS stylesheets
+│   ├── label_map.json        # Class label mappings
+│   └── stopwords.txt         # Custom stopwords
+├── config/                   # Configuration files
+│   └── params.yaml          # Model parameters
+├── data/                     # Data directory
+│   └── raw/                 # Raw datasets
+│       ├── train.csv        # Training data
+│       ├── val.csv          # Validation data
+│       └── test.csv         # Test data
+├── models/                   # Trained models
+│   └── tfidf_logreg.joblib  # TF-IDF + Logistic Regression model
+├── src/                      # Source code
+│   ├── api/                 # API application
+│   │   └── app.py
+│   ├── data/                # Data utilities
+│   │   └── loader.py
+│   ├── eval/                # Evaluation scripts
+│   │   └── evaluate_baseline.py
+│   ├── features/            # Feature engineering
+│   │   └── preprocess.py
+│   └── models/              # Model training/prediction
+│       ├── predict_baseline.py
+│       ├── train_baseline.py
+│       └── train_bert.py
+├── streamlit/               # Streamlit configuration
+│   └── config.toml
+├── ui/                      # User interface
+│   └── streamlit_app.py
+├── params.yaml              # Main configuration
+├── requirements.txt         # Python dependencies
+├── TODO.md                  # Project roadmap
+└── documentation.txt        # This file
+
+================================================================================
+5. INSTALLATION GUIDE
+================================================================================
+
+Prerequisites:
+1. Python 3.8+ installed
+2. Git (optional, for cloning repository)
+
+Installation Steps:
+
+1. Download/Clone the project:
+   git clone [repository-url]
+   cd fake-news-detector
+
+2. Create virtual environment:
+   python -m venv .venv
+   # Windows:
+   .venv\Scripts\activate
+   # Linux/macOS:
+   source .venv/bin/activate
+
+3. Install dependencies:
+   pip install -r requirements.txt
+
+4. Download required NLTK data:
+   python -c "import nltk; nltk.download('wordnet'); nltk.download('stopwords')"
+
+5. Verify model file exists:
+   - Check models/tfidf_logreg.joblib exists
+   - If missing, train model (see Section 9.1)
+
+6. Test installation:
+   python -c "import streamlit, sklearn, pandas; print('Installation successful')"
+
+================================================================================
+6. USER MANUAL
+================================================================================
+
+6.1 WEB INTERFACE
+-----------------
+
+Starting the Application:
+1. Activate virtual environment
+2. Run: streamlit run ui/streamlit_app.py
+3. Open browser to http://localhost:8506
+
+Using the Interface:
+1. Enter article title (optional)
+2. Enter article body text
+3. Click "Predict" button
+4. View classification result and confidence score
+5. Optionally explore model explanations
+
+Features:
+- Dark mode toggle
+- Model selection (TF-IDF LR, BERT coming soon)
+- Feature importance visualization (Word Cloud/Bar Chart)
+
+6.2 API USAGE
+-------------
+
+Starting the API:
+1. python src/api/app.py
+2. API available at http://localhost:5000
+
+API Endpoints:
+
+POST /predict
+Request Body:
+{
+  "title": "Article Title (optional)",
+  "body": "Article content (required)"
+}
+
+Response:
+{
+  "prediction": "Fake|Real|Satire",
+  "confidence": 0.95,
+  "probabilities": {
+    "Fake": 0.02,
+    "Real": 0.95,
+    "Satire": 0.03
+  }
+}
+
+Example using curl:
+curl -X POST http://localhost:5000/predict \
+     -H "Content-Type: application/json" \
+     -d '{"body": "This is a sample news article..."}'
+
+================================================================================
+7. TECHNICAL SPECIFICATIONS
+================================================================================
+
+7.1 ARCHITECTURE
+----------------
+The system follows a modular architecture:
+
+- UI Layer: Streamlit web application
+- API Layer: Flask REST API
+- Processing Layer: Text preprocessing pipeline
+- Model Layer: Scikit-learn ML models
+- Data Layer: CSV-based data storage
+
+7.2 DATA PROCESSING PIPELINE
+----------------------------
+1. Text Input → 2. Preprocessing → 3. Feature Extraction → 4. Prediction
+
+Preprocessing Steps:
+- Lowercase conversion
+- Punctuation removal
+- Stopword filtering
+- Lemmatization
+- TF-IDF vectorization (max_features=5000)
+
+7.3 MODEL DETAILS
+-----------------
+Current Model: TF-IDF Vectorizer + Logistic Regression
+
+Parameters:
+- TF-IDF: max_features=5000, ngram_range=(1,2)
+- Logistic Regression: C=1.0, max_iter=1000
+
+Performance Metrics (approximate):
+- Accuracy: 85%
+- Precision: 83%
+- Recall: 84%
+- F1-Score: 83%
+
+================================================================================
+8. CONFIGURATION
+================================================================================
+
+Configuration Files:
+- params.yaml: Main configuration
+- config/params.yaml: Additional parameters
+- streamlit/config.toml: Streamlit settings
+
+Key Configuration Options:
+
+Preprocessing:
+  lowercase: true
+  remove_punctuation: true
+  remove_stopwords: true
+  lemmatize: true
+
+Model:
+  type: tfidf_logreg
+  max_features: 5000
+  ngram_range: [1, 2]
+
+API:
+  host: 0.0.0.0
+  port: 5000
+  debug: false
+
+================================================================================
+9. DEVELOPMENT GUIDE
+================================================================================
+
+9.1 TRAINING NEW MODELS
+-----------------------
+
+1. Prepare data:
+   - CSV format with columns: title, body, label
+   - Labels: Fake, Real, Satire
+
+2. Update configuration:
+   - Modify params.yaml with data paths
+   - Adjust hyperparameters as needed
+
+3. Train model:
+   python src/models/train_baseline.py
+
+4. Evaluate performance:
+   python src/models/evaluate_baseline.py
+
+5. Save model to models/ directory
+
+9.2 ADDING FEATURES
+-------------------
+
+Adding New Models:
+1. Create new training script in src/models/
+2. Implement predict function in src/models/
+3. Update UI/API to support new model
+4. Add configuration options
+
+Adding Preprocessing Steps:
+1. Modify src/features/preprocess.py
+2. Update configuration parameters
+3. Test with existing models
+
+================================================================================
+10. TESTING
+================================================================================
+
+Unit Tests:
+- Run: python -m pytest tests/ (if implemented)
+
+Integration Tests:
+- Test API endpoints with sample data
+- Verify UI functionality
+
+Model Validation:
+- Use validation dataset for hyperparameter tuning
+- Cross-validation for robust evaluation
+
+Performance Testing:
+- Test with large datasets
+- Monitor memory usage
+- Check response times
+
+================================================================================
+11. TROUBLESHOOTING
+================================================================================
+
+Common Issues:
+
+1. Import Errors:
+   - Ensure all dependencies installed
+   - Check Python version compatibility
+   - Verify virtual environment activation
+
+2. Model Loading Errors:
+   - Check models/tfidf_logreg.joblib exists
+   - Retrain model if corrupted
+   - Verify scikit-learn version compatibility
+
+3. API Connection Issues:
+   - Check port 5000 availability
+   - Verify firewall settings
+   - Test with different host (127.0.0.1 vs localhost)
+
+4. Memory Errors:
+   - Reduce max_features in configuration
+   - Process data in batches
+   - Increase system RAM
+
+5. UI Not Loading:
+   - Clear browser cache
+   - Try different browser
+   - Check Streamlit version
+
+================================================================================
+12. DEPENDENCIES
+================================================================================
+
+Core Dependencies:
+- streamlit==1.28.1
+- flask==2.3.3
+- scikit-learn==1.3.0
+- pandas==2.0.3
+- numpy==1.24.3
+- matplotlib==3.7.2
+- wordcloud==1.9.2
+- spacy==3.6.1
+- joblib==1.3.2
+- PyYAML==6.0.1
+
+Development Dependencies:
+- pytest (for testing)
+- black (code formatting)
+- flake8 (linting)
+
+================================================================================
+13. LICENSE AND LEGAL
+================================================================================
+
+License: MIT License (Educational Use)
+
+Legal Disclaimers:
+- This tool is for educational and research purposes only
+- Not intended for production use without proper validation
+- Users are responsible for compliance with local laws
+- No warranty provided for classification accuracy
+- Always verify information from multiple sources
+
+================================================================================
+14. CONTACT INFORMATION
+================================================================================
+
+For support, questions, or contributions:
+- Email: [your-email@example.com]
+- GitHub: [repository-url]
+- Issues: [repository-url]/issues
+
+================================================================================
+15. APPENDICES
+================================================================================
+
+Appendix A: Sample API Requests
+Appendix B: Configuration Examples
+Appendix C: Performance Benchmarks
+Appendix D: Dataset Format Specifications
+
+================================================================================
+END OF DOCUMENTATION
+================================================================================

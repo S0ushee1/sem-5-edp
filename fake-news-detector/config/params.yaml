@@ -1,0 +1,33 @@
+data:
+  train_path: data/raw/train.csv
+  val_path: data/raw/val.csv
+  test_path: data/raw/test.csv
+  text_fields: ["title", "body"]
+  label_field: "label"
+  labels: ["Fake", "Real", "Satire"]
+
+preprocess:
+  lowercase: true
+  remove_urls: true
+  remove_emails: true
+  lemmatize: true
+  keep_negations: true
+
+tfidf:
+  word_ngram: [1, 2]
+  char_ngram: [3, 5]
+  max_features: 200000
+  min_df: 3
+  sublinear_tf: true
+
+logreg:
+  C: 1.0
+  max_iter: 300
+  class_weight: "balanced"
+
+bert:
+  model_name: "distilbert-base-uncased"
+  max_len: 256
+  batch_size: 16
+  epochs: 4
+  lr: 2e-5

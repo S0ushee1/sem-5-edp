@@ -1,0 +1,6 @@
+[theme]
+primaryColor = "#2E86C1"          # Blue for trust
+backgroundColor = "#F9FAFB"       # Soft off-white
+secondaryBackgroundColor = "#FFFFFF"  # White for cards
+textColor = "#1C1C1C"             # Deep gray for readability
+font = "sans serif"

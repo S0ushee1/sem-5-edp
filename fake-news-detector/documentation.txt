@@ -1,0 +1,171 @@
+FAKE NEWS DETECTOR PROJECT DOCUMENTATION
+========================================
+
+OVERVIEW
+--------
+This project is a machine learning-based fake news detection system that classifies news articles into three categories: Fake, Real, or Satire. It uses natural language processing (NLP) techniques and a TF-IDF vectorizer with Logistic Regression model to analyze text content.
+
+FEATURES
+--------
+- Single article prediction via web interface
+- Model explanation with word clouds and bar charts
+- REST API for programmatic access
+- Configurable preprocessing pipeline
+- Support for multiple model types (TF-IDF + Logistic Regression, BERT coming soon)
+- Streamlit-based user interface
+
+PROJECT STRUCTURE
+-----------------
+fake-news-detector/
+├── assets/
+│   ├── styles/
+│   │   ├── base.css          # Base CSS styles
+│   │   ├── components.css    # Component-specific styles
+│   │   └── layout.css        # Layout styles
+│   ├── label_map.json        # Label mapping for predictions
+│   └── stopwords.txt         # Custom stopwords list
+├── config/
+│   └── params.yaml           # Model and preprocessing parameters
+├── data/
+│   └── raw/
+│       ├── train.csv         # Training dataset
+│       ├── val.csv           # Validation dataset
+│       └── test.csv          # Test dataset
+├── models/
+│   └── tfidf_logreg.joblib   # Trained TF-IDF + Logistic Regression model
+├── src/
+│   ├── api/
+│   │   └── app.py            # Flask API application
+│   ├── data/
+│   │   └── loader.py         # Data loading utilities
+│   ├── eval/
+│   │   └── evaluate_baseline.py  # Model evaluation script
+│   ├── features/
+│   │   └── preprocess.py     # Text preprocessing functions
+│   └── models/
+│       ├── predict_baseline.py   # Prediction functions
+│       ├── train_baseline.py     # Baseline model training
+│       └── train_bert.py         # BERT model training (future)
+├── streamlit/
+│   └── config.toml           # Streamlit configuration
+├── ui/
+│   └── streamlit_app.py      # Streamlit web application
+├── params.yaml               # Main configuration file
+├── requirements.txt          # Python dependencies
+├── TODO.md                   # Project tasks and roadmap
+└── documentation.txt         # This documentation file
+
+INSTALLATION
+------------
+1. Clone or download the project repository
+2. Navigate to the project directory:
+   cd fake-news-detector
+
+3. Create a virtual environment (recommended):
+   python -m venv .venv
+   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+4. Install dependencies:
+   pip install -r requirements.txt
+
+5. Ensure model file exists:
+   - The trained model (tfidf_logreg.joblib) should be in the models/ directory
+   - If not present, train the model using: python src/models/train_baseline.py
+
+USAGE
+-----
+Web Interface:
+1. Run the Streamlit app:
+   streamlit run ui/streamlit_app.py
+
+2. Open browser to http://localhost:8506
+3. Enter article title and/or body text
+4. Click "Predict" to get classification
+5. Optionally view model explanations
+
+API Usage:
+1. Start the Flask API:
+   python src/api/app.py
+
+2. Make POST requests to /predict endpoint with JSON payload:
+   {
+     "title": "Article Title",
+     "body": "Article content..."
+   }
+
+3. Example using curl:
+   curl -X POST http://localhost:5000/predict \
+        -H "Content-Type: application/json" \
+        -d '{"title": "Sample Title", "body": "Sample content"}'
+
+CONFIGURATION
+-------------
+- params.yaml: Contains model hyperparameters, preprocessing settings, and file paths
+- config/params.yaml: Additional configuration parameters
+- streamlit/config.toml: Streamlit-specific settings
+
+MODEL DETAILS
+-------------
+Current Model: TF-IDF Vectorizer + Logistic Regression
+- Input: Preprocessed text (title + body)
+- Output: Probability scores for Fake/Real/Satire classes
+- Accuracy: ~85% on test set (varies based on training data)
+
+Preprocessing Steps:
+1. Lowercase conversion
+2. Punctuation removal
+3. Stopword removal
+4. Lemmatization
+5. TF-IDF vectorization
+
+DATASET
+-------
+The model is trained on a custom dataset containing news articles labeled as:
+- Fake: Misleading or fabricated news
+- Real: Factual news from reliable sources
+- Satire: Humorous or satirical content
+
+Dataset files are located in data/raw/ directory.
+
+DEPENDENCIES
+------------
+- Python 3.8+
+- streamlit
+- flask
+- scikit-learn
+- pandas
+- numpy
+- matplotlib
+- wordcloud
+- spacy
+- joblib
+- PyYAML
+
+TRAINING NEW MODELS
+-------------------
+1. Prepare training data in CSV format with columns: title, body, label
+2. Update params.yaml with correct file paths
+3. Run training script:
+   python src/models/train_baseline.py
+
+4. Evaluate model:
+   python src/eval/evaluate_baseline.py
+
+CONTRIBUTING
+------------
+1. Fork the repository
+2. Create a feature branch
+3. Make changes and test thoroughly
+4. Submit a pull request
+
+LICENSE
+-------
+This project is for educational purposes. Please check local regulations regarding AI and content classification usage.
+
+CONTACT
+-------
+For questions or issues, please refer to the project repository or create an issue.
+
+VERSION
+-------
+v1.0.0 - Initial release with TF-IDF + Logistic Regression model

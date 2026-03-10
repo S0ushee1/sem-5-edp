@@ -1,0 +1,17 @@
+preprocess:
+  lowercase: true
+  remove_urls: true
+  remove_emails: true
+  lemmatize: true
+
+tfidf:
+  word_ngram: [1, 2]      # unigrams + bigrams
+  max_features: 5000      # cap vocabulary size
+  min_df: 1               # ✅ keep words that appear in at least 1 doc
+  sublinear_tf: true
+  stop_words: english     # remove common filler words
+
+logreg:
+  C: 1.0
+  max_iter: 1000
+  class_weight: balanced

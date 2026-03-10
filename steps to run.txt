@@ -1,0 +1,11 @@
+1. cd fake-news-detector
+\\ change folder name 
+
+2. venv\Scripts\activate
+\\ Activate the Environment
+
+3. python -m src.models.train_baseline
+\\Train the Model 
+
+4. python -m streamlit run ui/streamlit_app.py
+\\Launch the website
